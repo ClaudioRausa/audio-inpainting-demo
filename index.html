@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Inpainting Demo</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { color: #2c3e50; }
+        .controls { text-align: center; margin-bottom: 20px; }
+        select { padding: 10px 15px; font-size: 16px; margin: 0 10px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer; }
+        .file-section { background: white; padding: 20px; margin-bottom: 30px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .file-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #3498db; padding-bottom: 5px; display: inline-block;}
+        
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .audio-card { background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #e0e0e0; text-align: center; }
+        .audio-card.reference { border-left: 4px solid #e74c3c; }
+        .audio-card.gan { border-left: 4px solid #2ecc71; }
+        .audio-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #555; }
+        audio { width: 100%; height: 35px; outline: none; }
+        
+        /* Nasconde le sezioni non selezionate */
+        .scenario-view { display: none; }
+        .scenario-view.active { display: block; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Risultati Audio Inpainting (LPC + GAN)</h1>
+        <p>Seleziona lo scenario di perdita pacchetti per confrontare i modelli.</p>
+    </header>
+
+    <div class="controls">
+        <select id="typeSelect" onchange="updateView()">
+            <option value="randomized">Packet Loss: Randomized (Burst)</option>
+            <option value="ordinated">Packet Loss: Ordinated</option>
+        </select>
+        <select id="lossSelect" onchange="updateView()">
+            <option value="10">10% Loss</option>
+            <option value="14">14% Loss</option>
+            <option value="20">20% Loss</option>
+            <option value="30">30% Loss</option>
+            <option value="40">40% Loss</option>
+            <option value="50">50% Loss</option>
+        </select>
+    </div>
+
+    <div id="content">
+        <div id="randomized10" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_randomized10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_randomized10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_randomized10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_randomized10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_randomized10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_randomized10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="randomized14" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_randomized14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_randomized14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_randomized14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_randomized14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_randomized14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_randomized14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="randomized20" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_randomized20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_randomized20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_randomized20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_randomized20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_randomized20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_randomized20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="randomized30" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_randomized30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_randomized30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_randomized30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_randomized30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_randomized30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_randomized30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="randomized40" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_randomized40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_randomized40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_randomized40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_randomized40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_randomized40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_randomized40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="randomized50" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_randomized50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_randomized50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_randomized50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_randomized50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_randomized50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_randomized50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="ordinated10" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_ordinated10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_ordinated10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_ordinated10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_ordinated10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (10%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_ordinated10.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_ordinated10.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="ordinated14" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_ordinated14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_ordinated14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_ordinated14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_ordinated14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (14%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_ordinated14.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_ordinated14.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="ordinated20" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_ordinated20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_ordinated20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_ordinated20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_ordinated20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (20%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_ordinated20.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_ordinated20.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="ordinated30" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_ordinated30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_ordinated30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_ordinated30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_ordinated30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (30%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_ordinated30.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_ordinated30.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="ordinated40" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_ordinated40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_ordinated40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_ordinated40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_ordinated40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (40%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_ordinated40.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_ordinated40.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+        <div id="ordinated50" class="scenario-view">
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p232_001_mic2_lossy_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_001_mic2_LPC_only_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_001_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_002_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_003_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_004_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_005_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_006_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_001_mic2_repaired_007_ordinated50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p232_011_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p232_011_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p232_011_mic2_lossy_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p232_011_mic2_LPC_only_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_001_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_002_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_003_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_004_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_005_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_006_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p232_011_mic2_repaired_007_ordinated50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_001_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_001_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p257_001_mic2_lossy_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_001_mic2_LPC_only_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_001_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_002_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_003_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_004_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_005_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_006_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_001_mic2_repaired_007_ordinated50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_004_mic1</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_004_mic1_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p257_004_mic1_lossy_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_004_mic1_LPC_only_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_001_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_002_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_003_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_004_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_005_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_006_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_004_mic1_repaired_007_ordinated50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+            <div class="file-section">
+                <div class="file-title">File Audio: p257_242_mic2</div>
+                <div class="grid-container">
+                    <div class="audio-card reference"><div class="audio-title">Originale (Clean)</div><audio controls preload="none"><source src="audio/p257_242_mic2_clean.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Degradato (50%)</div><audio controls preload="none"><source src="audio/p257_242_mic2_lossy_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card reference"><div class="audio-title">Baseline (Solo LPC)</div><audio controls preload="none"><source src="audio/p257_242_mic2_LPC_only_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 001</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_001_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 002</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_002_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 003</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_003_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 004</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_004_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 005</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_005_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 006</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_006_ordinated50.wav" type="audio/wav"></audio></div>
+                    <div class="audio-card gan"><div class="audio-title">GAN Modello 007</div><audio controls preload="none"><source src="audio/p257_242_mic2_repaired_007_ordinated50.wav" type="audio/wav"></audio></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Funzione per mostrare solo il div corretto in base ai menu a tendina
+        function updateView() {
+            let t = document.getElementById('typeSelect').value;
+            let l = document.getElementById('lossSelect').value;
+            let targetId = t + l;
+            
+            document.querySelectorAll('.scenario-view').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            let targetEl = document.getElementById(targetId);
+            if(targetEl) targetEl.classList.add('active');
+        }
+
+        // Auto-pause: fa suonare un solo audio alla volta
+        document.addEventListener('play', function(e){
+            var audios = document.getElementsByTagName('audio');
+            for(var i = 0, len = audios.length; i < len;i++){
+                if(audios[i] != e.target){
+                    audios[i].pause();
+                }
+            }
+        }, true);
+        
+        // Inizializza la prima vista
+        window.onload = updateView;
+    </script>
+</body>
+</html>
