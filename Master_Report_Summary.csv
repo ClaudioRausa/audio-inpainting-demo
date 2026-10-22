@@ -1,0 +1,146 @@
+;Lossy - ordinated10;;;;;Baseline - ordinated10;;;;;001 - ordinated10;;;;;002 - ordinated10;;;;;003 - ordinated10;;;;;004 - ordinated10;;;;;005 - ordinated10;;;;;006 - ordinated10;;;;;007 - ordinated10;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,831;0,925;5,458;3,536;;MEDIE;2,496;0,934;3,565;3,667;;MEDIE;2,525;0,957;3,768;4,046;;MEDIE;2,5;0,957;3,768;4,045;;MEDIE;2,516;0,956;3,741;4,025;;MEDIE;2,516;0,957;3,76;4,049;;MEDIE;2,501;0,956;3,796;4,079;;MEDIE;2,514;0,956;3,813;4,063;;MEDIE;2,495;0,956;3,787;4,066
+
+
+;Lossy - ordinated14;;;;;Baseline - ordinated14;;;;;001 - ordinated14;;;;;002 - ordinated14;;;;;003 - ordinated14;;;;;004 - ordinated14;;;;;005 - ordinated14;;;;;006 - ordinated14;;;;;007 - ordinated14;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,673;0,906;6,881;3,108;;MEDIE;2,271;0,91;4,616;3,238;;MEDIE;2,282;0,94;4,856;3,849;;MEDIE;2,251;0,94;4,86;3,841;;MEDIE;2,27;0,94;4,825;3,82;;MEDIE;2,277;0,94;4,849;3,851;;MEDIE;2,256;0,939;4,891;3,894;;MEDIE;2,266;0,94;4,913;3,878;;MEDIE;2,252;0,94;4,879;3,882
+
+
+;Lossy - ordinated20;;;;;Baseline - ordinated20;;;;;001 - ordinated20;;;;;002 - ordinated20;;;;;003 - ordinated20;;;;;004 - ordinated20;;;;;005 - ordinated20;;;;;006 - ordinated20;;;;;007 - ordinated20;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,52;0,878;7,925;2,825;;MEDIE;2,058;0,877;5,529;2,647;;MEDIE;2,059;0,918;5,796;3,479;;MEDIE;2,031;0,918;5,794;3,488;;MEDIE;2,049;0,917;5,756;3,436;;MEDIE;2,054;0,918;5,779;3,483;;MEDIE;2,031;0,917;5,842;3,554;;MEDIE;2,046;0,918;5,85;3,51;;MEDIE;2,03;0,917;5,818;3,539
+
+
+;Lossy - ordinated30;;;;;Baseline - ordinated30;;;;;001 - ordinated30;;;;;002 - ordinated30;;;;;003 - ordinated30;;;;;004 - ordinated30;;;;;005 - ordinated30;;;;;006 - ordinated30;;;;;007 - ordinated30;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,352;0,827;9,146;2,906;;MEDIE;1,759;0,814;7,14;3,826;;MEDIE;1,732;0,871;7,363;3,898;;MEDIE;1,711;0,87;7,376;3,921;;MEDIE;1,717;0,869;7,337;3,931;;MEDIE;1,74;0,871;7,351;3,911;;MEDIE;1,704;0,868;7,425;3,973;;MEDIE;1,717;0,87;7,393;3,979;;MEDIE;1,714;0,869;7,377;3,936
+
+
+;Lossy - ordinated40;;;;;Baseline - ordinated40;;;;;001 - ordinated40;;;;;002 - ordinated40;;;;;003 - ordinated40;;;;;004 - ordinated40;;;;;005 - ordinated40;;;;;006 - ordinated40;;;;;007 - ordinated40;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,234;0,77;10,122;2,336;;MEDIE;1,351;0,74;9,902;2,547;;MEDIE;1,339;0,785;9,875;2,928;;MEDIE;1,323;0,781;9,893;2,939;;MEDIE;1,344;0,784;9,882;3,023;;MEDIE;1,344;0,784;9,866;2,965;;MEDIE;1,324;0,778;10,005;3,039;;MEDIE;1,334;0,784;9,923;3,08;;MEDIE;1,335;0,779;9,892;2,969
+
+
+;Lossy - ordinated50;;;;;Baseline - ordinated50;;;;;001 - ordinated50;;;;;002 - ordinated50;;;;;003 - ordinated50;;;;;004 - ordinated50;;;;;005 - ordinated50;;;;;006 - ordinated50;;;;;007 - ordinated50;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,234;0,77;10,122;2,336;;MEDIE;1,351;0,74;9,902;2,547;;MEDIE;1,338;0,784;9,876;2,925;;MEDIE;1,321;0,781;9,893;2,939;;MEDIE;1,343;0,784;9,883;3,02;;MEDIE;1,344;0,784;9,866;2,965;;MEDIE;1,326;0,778;10,011;3,045;;MEDIE;1,335;0,784;9,923;3,08;;MEDIE;1,336;0,779;9,891;2,966
+
+
+;Lossy - ordinated100;;;;;Baseline - ordinated100;;;;;001 - ordinated100;;;;;002 - ordinated100;;;;;003 - ordinated100;;;;;004 - ordinated100;;;;;005 - ordinated100;;;;;006 - ordinated100;;;;;007 - ordinated100;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,112;-0,008;152,046;3,03;;MEDIE;1,116;-0,016;146,348;3,418;;MEDIE;1,079;0,408;44,407;3,691;;MEDIE;1,074;0,42;44,422;3,857;;MEDIE;1,078;0,435;44,695;3,851;;MEDIE;1,084;0,424;43,705;3,739;;MEDIE;1,097;0,415;39,476;3,538;;MEDIE;1,061;0,424;44,821;3,672;;MEDIE;1,076;0,419;44,462;3,79
+
+
+;Lossy - randomized10;;;;;Baseline - randomized10;;;;;001 - randomized10;;;;;002 - randomized10;;;;;003 - randomized10;;;;;004 - randomized10;;;;;005 - randomized10;;;;;006 - randomized10;;;;;007 - randomized10;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,926;0,925;4,161;3,523;;MEDIE;2,449;0,93;2,919;3,748;;MEDIE;2,547;0,955;3,05;4,048;;MEDIE;2,53;0,955;3,053;4,052;;MEDIE;2,538;0,954;3,033;4,038;;MEDIE;2,554;0,955;3,045;4,053;;MEDIE;2,526;0,954;3,071;4,092;;MEDIE;2,537;0,954;3,079;4,08;;MEDIE;2,522;0,954;3,065;4,073
+
+
+;Lossy - randomized14;;;;;Baseline - randomized14;;;;;001 - randomized14;;;;;002 - randomized14;;;;;003 - randomized14;;;;;004 - randomized14;;;;;005 - randomized14;;;;;006 - randomized14;;;;;007 - randomized14;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,693;0,902;5,204;3,233;;MEDIE;2,136;0,903;3,77;3,479;;MEDIE;2,274;0,937;3,922;3,9;;MEDIE;2,252;0,936;3,927;3,906;;MEDIE;2,257;0,935;3,902;3,893;;MEDIE;2,279;0,936;3,916;3,91;;MEDIE;2,247;0,935;3,948;3,959;;MEDIE;2,261;0,935;3,956;3,941;;MEDIE;2,245;0,936;3,938;3,933
+
+
+;Lossy - randomized20;;;;;Baseline - randomized20;;;;;001 - randomized20;;;;;002 - randomized20;;;;;003 - randomized20;;;;;004 - randomized20;;;;;005 - randomized20;;;;;006 - randomized20;;;;;007 - randomized20;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,468;0,866;6,447;2,813;;MEDIE;1,799;0,864;4,874;3,06;;MEDIE;1,961;0,91;5,032;3,631;;MEDIE;1,937;0,909;5,039;3,644;;MEDIE;1,944;0,908;5,012;3,62;;MEDIE;1,968;0,909;5,024;3,646;;MEDIE;1,937;0,908;5,063;3,707;;MEDIE;1,943;0,908;5,068;3,678;;MEDIE;1,936;0,909;5,049;3,68
+
+
+;Lossy - randomized30;;;;;Baseline - randomized30;;;;;001 - randomized30;;;;;002 - randomized30;;;;;003 - randomized30;;;;;004 - randomized30;;;;;005 - randomized30;;;;;006 - randomized30;;;;;007 - randomized30;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,271;0,799;7,801;2,324;;MEDIE;1,474;0,795;6,409;2,517;;MEDIE;1,629;0,858;6,525;3,167;;MEDIE;1,603;0,858;6,528;3,172;;MEDIE;1,62;0,856;6,503;3,169;;MEDIE;1,641;0,859;6,506;3,205;;MEDIE;1,614;0,856;6,562;3,273;;MEDIE;1,615;0,857;6,56;3,228;;MEDIE;1,614;0,857;6,532;3,233
+
+
+;Lossy - randomized40;;;;;Baseline - randomized40;;;;;001 - randomized40;;;;;002 - randomized40;;;;;003 - randomized40;;;;;004 - randomized40;;;;;005 - randomized40;;;;;006 - randomized40;;;;;007 - randomized40;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,17;0,729;8,697;2,016;;MEDIE;1,304;0,723;7,833;2,132;;MEDIE;1,449;0,803;7,839;2,697;;MEDIE;1,428;0,803;7,841;2,711;;MEDIE;1,437;0,801;7,828;2,71;;MEDIE;1,46;0,805;7,817;2,753;;MEDIE;1,433;0,801;7,895;2,805;;MEDIE;1,427;0,801;7,878;2,767;;MEDIE;1,441;0,802;7,842;2,749
+
+
+;Lossy - randomized50;;;;;Baseline - randomized50;;;;;001 - randomized50;;;;;002 - randomized50;;;;;003 - randomized50;;;;;004 - randomized50;;;;;005 - randomized50;;;;;006 - randomized50;;;;;007 - randomized50;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,108;0,645;9,531;1,767;;MEDIE;1,194;0,642;9,494;1,865;;MEDIE;1,308;0,738;9,271;2,351;;MEDIE;1,289;0,736;9,294;2,365;;MEDIE;1,299;0,735;9,304;2,382;;MEDIE;1,312;0,739;9,248;2,401;;MEDIE;1,291;0,734;9,29;2,468;;MEDIE;1,287;0,735;9,339;2,417;;MEDIE;1,302;0,735;9,285;2,406
+
+
+;Lossy - randomized100;;;;;Baseline - randomized100;;;;;001 - randomized100;;;;;002 - randomized100;;;;;003 - randomized100;;;;;004 - randomized100;;;;;005 - randomized100;;;;;006 - randomized100;;;;;007 - randomized100;;
+File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑;;File;PESQ (1-4.5) ↑;STOI (0-1) ↑;LSD (dB) ↓;PLCMOS (1-5) ↑
+MEDIE;1,112;-0,008;152,046;3,03;;MEDIE;1,116;-0,016;146,348;3,418;;MEDIE;1,086;0,409;44,41;3,691;;MEDIE;1,073;0,421;44,423;3,858;;MEDIE;1,083;0,435;44,693;3,852;;MEDIE;1,078;0,423;43,706;3,741;;MEDIE;1,103;0,416;39,494;3,541;;MEDIE;1,073;0,424;44,822;3,671;;MEDIE;1,097;0,42;44,458;3,789
+
+
+;;;;;
+=========================================================================================================
+ANALISI COMPARATIVA: CONFRONTO TRA LOSSY, BASELINE E MIGLIOR RETE GAN
+=========================================================================================================
+
+Tipologia;Loss %;Metrica;Valore LOSSY;Valore LPC;Miglior Rete;Valore Rete;DELTA Rete vs Lossy
+ordinated;10%;PESQ;1,831;2,496;Rete 001;2,525;+0,694
+ordinated;10%;STOI;0,925;0,934;Rete 001;0,957;+0,032
+ordinated;10%;LSD;5,458;3,565;Rete 003;3,741;-1,717
+ordinated;10%;PLCMOS;3,536;3,667;Rete 005;4,079;+0,543
+;;;;;;;
+ordinated;14%;PESQ;1,673;2,271;Rete 001;2,282;+0,609
+ordinated;14%;STOI;0,906;0,910;Rete 001;0,940;+0,034
+ordinated;14%;LSD;6,881;4,616;Rete 003;4,825;-2,056
+ordinated;14%;PLCMOS;3,108;3,238;Rete 005;3,894;+0,786
+;;;;;;;
+ordinated;20%;PESQ;1,520;2,058;Rete 001;2,059;+0,539
+ordinated;20%;STOI;0,878;0,877;Rete 001;0,918;+0,040
+ordinated;20%;LSD;7,925;5,529;Rete 003;5,756;-2,169
+ordinated;20%;PLCMOS;2,825;2,647;Rete 005;3,554;+0,729
+;;;;;;;
+ordinated;30%;PESQ;1,352;1,759;Rete 004;1,740;+0,388
+ordinated;30%;STOI;0,827;0,814;Rete 001;0,871;+0,044
+ordinated;30%;LSD;9,146;7,140;Rete 003;7,337;-1,809
+ordinated;30%;PLCMOS;2,906;3,826;Rete 006;3,979;+1,073
+;;;;;;;
+ordinated;40%;PESQ;1,234;1,351;Rete 003;1,344;+0,110
+ordinated;40%;STOI;0,770;0,740;Rete 001;0,785;+0,015
+ordinated;40%;LSD;10,122;9,902;Rete 004;9,866;-0,256
+ordinated;40%;PLCMOS;2,336;2,547;Rete 006;3,080;+0,744
+;;;;;;;
+ordinated;50%;PESQ;1,234;1,351;Rete 004;1,344;+0,110
+ordinated;50%;STOI;0,770;0,740;Rete 001;0,784;+0,014
+ordinated;50%;LSD;10,122;9,902;Rete 004;9,866;-0,256
+ordinated;50%;PLCMOS;2,336;2,547;Rete 006;3,080;+0,744
+;;;;;;;
+ordinated;100%;PESQ;1,112;1,116;Rete 005;1,097;-0,015
+ordinated;100%;STOI;-0,008;-0,016;Rete 003;0,435;+0,443
+ordinated;100%;LSD;152,046;146,348;Rete 005;39,476;-112,570
+ordinated;100%;PLCMOS;3,030;3,418;Rete 002;3,857;+0,827
+;;;;;;;
+randomized;10%;PESQ;1,926;2,449;Rete 004;2,554;+0,628
+randomized;10%;STOI;0,925;0,930;Rete 001;0,955;+0,030
+randomized;10%;LSD;4,161;2,919;Rete 003;3,033;-1,128
+randomized;10%;PLCMOS;3,523;3,748;Rete 005;4,092;+0,569
+;;;;;;;
+randomized;14%;PESQ;1,693;2,136;Rete 004;2,279;+0,586
+randomized;14%;STOI;0,902;0,903;Rete 001;0,937;+0,035
+randomized;14%;LSD;5,204;3,770;Rete 003;3,902;-1,302
+randomized;14%;PLCMOS;3,233;3,479;Rete 005;3,959;+0,726
+;;;;;;;
+randomized;20%;PESQ;1,468;1,799;Rete 004;1,968;+0,500
+randomized;20%;STOI;0,866;0,864;Rete 001;0,910;+0,044
+randomized;20%;LSD;6,447;4,874;Rete 003;5,012;-1,435
+randomized;20%;PLCMOS;2,813;3,060;Rete 005;3,707;+0,894
+;;;;;;;
+randomized;30%;PESQ;1,271;1,474;Rete 004;1,641;+0,370
+randomized;30%;STOI;0,799;0,795;Rete 004;0,859;+0,060
+randomized;30%;LSD;7,801;6,409;Rete 003;6,503;-1,298
+randomized;30%;PLCMOS;2,324;2,517;Rete 005;3,273;+0,949
+;;;;;;;
+randomized;40%;PESQ;1,170;1,304;Rete 004;1,460;+0,290
+randomized;40%;STOI;0,729;0,723;Rete 004;0,805;+0,076
+randomized;40%;LSD;8,697;7,833;Rete 004;7,817;-0,880
+randomized;40%;PLCMOS;2,016;2,132;Rete 005;2,805;+0,789
+;;;;;;;
+randomized;50%;PESQ;1,108;1,194;Rete 004;1,312;+0,204
+randomized;50%;STOI;0,645;0,642;Rete 004;0,739;+0,094
+randomized;50%;LSD;9,531;9,494;Rete 004;9,248;-0,283
+randomized;50%;PLCMOS;1,767;1,865;Rete 005;2,468;+0,701
+;;;;;;;
+randomized;100%;PESQ;1,112;1,116;Rete 005;1,103;-0,009
+randomized;100%;STOI;-0,008;-0,016;Rete 003;0,435;+0,443
+randomized;100%;LSD;152,046;146,348;Rete 005;39,494;-112,552
+randomized;100%;PLCMOS;3,030;3,418;Rete 002;3,858;+0,828
+;;;;;;;
