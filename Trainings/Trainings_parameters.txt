@@ -1,0 +1,48 @@
+Addestramento 001: 
+G_LEARNING_RATE: 0.0002
+D_LEARNING_RATE: 0.0002
+LAMBDA: 100
+BATCH_SIZE: 16
+G_FEATURES: 16
+ 
+Addestramento 002:
+ho cambiato
+D_LEARNING_RATE: 0.00005
+ 
+Addestramento 003:
+ho cambiato
+D_LEARNING_RATE: 0.0001
+ 
+Addestramento 004:
+ho cambiato
+D_LEARNING_RATE: 0.00005
+LAMBDA: 50
+ 
+Addestramento 005:
+ho cambiato
+D_LEARNING_RATE: 0.00005
+LAMBDA: 50
+BATCH_SIZE: 32
+ 
+Addestramento 006:
+G_LEARNING_RATE: 0.0002
+D_LEARNING_RATE: 0.00005
+LAMBDA: 50
+BATCH_SIZE: 32
+G_FEATURES: 32
+
+Addestramento 007:
+G_LEARNING_RATE: 0.0002
+D_LEARNING_RATE: 0.00005
+LAMBDA: 25
+BATCH_SIZE: 32
+G_FEATURES: 16
+ 
+ 
+Per quanto riguarda i grafici sovrapposti:
+ 
+in G_ADV_LOSS, MAG_LOSS, SC_LOSS l'addestramento 001,002, 003 si sovrappongono tra loro nella curva più in alto dei grafici, mentre la 004, 005, 006 si sovrappongono nella curva più in basso dei grafici.
+in OPT_DISC si sovrappongono tra di loro nella curva più in basso 002, 004, 005, 006.
+in OPT_GEN si sovrappongono tutte.
+ 
+In OPT_DISC il picco della 001 è 1.98e-4 . 
